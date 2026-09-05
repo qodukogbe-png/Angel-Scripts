@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Angel Scripts</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #050505;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(5,5,5,.95);
+    border-bottom: 1px solid #222;
+    padding: 18px 20px;
+}
+
+.header-content {
+    max-width: 950px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f4bd00;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.site-name {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+main {
+    max-width: 950px;
+    margin: auto;
+    padding: 35px 20px 80px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 9vw, 70px);
+    margin: 0;
+    line-height: 1;
+}
+
+.hero p {
+    color: #999;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.search {
+    width: 100%;
+    margin-top: 22px;
+    padding: 17px;
+    border-radius: 14px;
+    border: 1px solid #292929;
+    background: #101010;
+    color: white;
+    outline: none;
+    font-size: 16px;
+}
+
+.search:focus {
+    border-color: #f4bd00;
+}
+
+.section-title {
+    margin-top: 45px;
+    font-size: 25px;
+}
+
+.script-card {
+    background: #0d0d0d;
+    border: 1px solid #252525;
+    border-radius: 22px;
+    padding: 24px;
+    margin-top: 18px;
+}
+
+.script-card h2 {
+    margin: 0 0 8px;
+    font-size: 25px;
+}
+
+.type {
+    color: #f4bd00;
+    font-weight: bold;
+}
+
+.description {
+    color: #aaa;
+    line-height: 1.5;
+}
+
+.date {
+    color: #777;
+    margin: 16px 0;
+}
+
+code {
+    font-family: monospace;
+}
+
+.code-box {
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 15px;
+    padding: 18px;
+    overflow-x: auto;
+    white-space: pre;
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.6;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+button {
+    border: none;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.copy {
+    background: #f4bd00;
+    color: #050505;
+}
+
+.copy:active {
+    transform: scale(.96);
+}
+
+.empty {
+    color: #777;
+    display: none;
+    padding: 30px 0;
+}
+
+footer {
+    border-top: 1px solid #1e1e1e;
+    color: #777;
+    text-align: center;
+    padding: 30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="logo">A</div>
+        <div class="site-name">Angel Scripts</div>
+    </div>
+</header>
+
+<main>
+
+<section class="hero">
+    <h1>Angel Scripts</h1>
+    <p>
+        Luau scripts for your Roblox projects.
+        Browse a script and copy the code instantly.
+    </p>
+
+    <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="🔎 Search scripts..."
+    >
+</section>
+
+<h2 class="section-title">Latest Scripts</h2>
+
+<div id="scripts">
+
+    <!-- SCRIPT #1 -->
+    <article
+        class="script-card"
+        data-search="dynamic weather system localscript weather"
+    >
+
+        <h2>Dynamic Weather System</h2>
+
+        <div class="type">
+            LocalScript
+        </div>
+
+        <p class="description">
+            A basic example Luau weather script.
+        </p>
+
+        <div class="date">
+            📅 09/05/2026
+        </div>
+
+        <pre class="code-box"><code>local Lighting = game:GetService("Lighting")
+
+local function Day()
+    Lighting.ClockTime = 14
+    Lighting.Brightness = 2
+end
+
+local function Night()
+    Lighting.ClockTime = 0
+    Lighting.Brightness = 0.5
+end
+
+while true do
+    Day()
+    task.wait(30)
+
+    Night()
+    task.wait(30)
+end</code></pre>
+
+        <div class="buttons">
+
+            <button
+                class="copy"
+                onclick="copyScript(this)"
+            >
+                📋 COPY SCRIPT
+            </button>
+
+        </div>
+
+    </article>
+
+    <!--
+    =====================================
+    ADD YOUR NEXT SCRIPT UNDER THIS LINE
+    =====================================
+    -->
+
+</div>
+
+<p id="empty" class="empty">
+    No scripts found.
+</p>
+
+</main>
+
+<footer>
+    © 2026 Angel Scripts
+</footer>
+
+<script>
+
+async function copyScript(button) {
+
+    const card = button.closest(".script-card");
+    const code = card.querySelector("code").innerText;
+
+    try {
+
+        await navigator.clipboard.writeText(code);
+
+        const oldText = button.innerText;
+
+        button.innerText = "✓ COPIED!";
+
+        setTimeout(function() {
+            button.innerText = oldText;
+        }, 1500);
+
+    } catch (error) {
+
+        alert(
+            "Couldn't automatically copy. Hold down on the code and copy it."
+        );
+
+    }
+}
+
+
+/* SEARCH SYSTEM */
+
+const search = document.getElementById("search");
+const cards = document.querySelectorAll(".script-card");
+const empty = document.getElementById("empty");
+
+search.addEventListener("input", function() {
+
+    const query = search.value.toLowerCase().trim();
+
+    let found = 0;
+
+    cards.forEach(function(card) {
+
+        const searchable =
+            card.dataset.search.toLowerCase();
+
+        if (searchable.includes(query)) {
+
+            card.style.display = "block";
+            found++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    empty.style.display =
+        found === 0 ? "block" : "none";
+
+});
+
+</script>
+
+</body>
+</html>
