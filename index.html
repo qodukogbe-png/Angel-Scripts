@@ -363,7 +363,6 @@ footer {
     <div class="header-inner">
 
         <div class="brand">
-
             <div class="logo">A</div>
 
             <div>
@@ -378,7 +377,6 @@ footer {
                     Admin
                 </div>
             </div>
-
         </div>
 
         <button
@@ -604,9 +602,7 @@ const searchInput =
 
 
 let currentUser = null;
-
 let scripts = [];
-
 let unsubscribeScripts = null;
 
 
@@ -673,20 +669,6 @@ authButton.addEventListener(
             );
 
 
-            if (
-                result.user.email
-                ?.toLowerCase()
-                ===
-                ADMIN_EMAIL.toLowerCase()
-            ) {
-
-                console.log(
-                    "ADMIN ACCOUNT DETECTED"
-                );
-
-            }
-
-
         } catch (error) {
 
             console.error(error);
@@ -740,12 +722,6 @@ onAuthStateChanged(
 
         authButton.textContent =
             "Sign out";
-
-
-        console.log(
-            "CURRENT USER:",
-            user.email
-        );
 
 
         if (isAdmin(user)) {
@@ -911,6 +887,22 @@ publishButton.addEventListener(
                 "✓ Script published!";
 
 
+            /*
+            KEEP ADMIN BUTTON VISIBLE
+            AFTER PUBLISHING
+            */
+
+            if (isAdmin(currentUser)) {
+
+                adminPlus.style.display =
+                    "block";
+
+                adminText.style.display =
+                    "block";
+
+            }
+
+
             setTimeout(
                 function () {
 
@@ -918,6 +910,22 @@ publishButton.addEventListener(
 
                     publishStatus.textContent =
                         "";
+
+
+                    /*
+                    KEEP IT VISIBLE EVEN
+                    AFTER THE CREATOR CLOSES
+                    */
+
+                    if (isAdmin(currentUser)) {
+
+                        adminPlus.style.display =
+                            "block";
+
+                        adminText.style.display =
+                            "block";
+
+                    }
 
                 },
                 900
