@@ -22,17 +22,14 @@ header {
     position: sticky;
     top: 0;
     z-index: 50;
-
     background: rgba(5, 5, 5, 0.96);
     backdrop-filter: blur(10px);
-
     border-bottom: 1px solid #222;
 }
 
 .header-inner {
     max-width: 1000px;
     margin: auto;
-
     min-height: 76px;
     padding: 12px 20px;
 
@@ -51,7 +48,6 @@ header {
 .logo {
     width: 46px;
     height: 46px;
-
     border-radius: 50%;
 
     background: #f4bd00;
@@ -68,6 +64,12 @@ header {
 .brand-name {
     font-size: 22px;
     font-weight: 900;
+}
+
+.admin-text {
+    display: none;
+    color: #f4bd00;
+    font-size: 13px;
 }
 
 .auth-button {
@@ -91,7 +93,6 @@ main {
 
 .hero h1 {
     margin: 0;
-
     font-size: clamp(42px, 10vw, 75px);
     line-height: 0.95;
 }
@@ -100,15 +101,12 @@ main {
     color: #999;
     line-height: 1.6;
     font-size: 17px;
-
     max-width: 600px;
 }
 
 .search {
     width: 100%;
-
     margin-top: 25px;
-
     padding: 17px 18px;
 
     background: #101010;
@@ -190,7 +188,6 @@ main {
     padding: 18px;
 
     overflow: auto;
-
     max-height: 360px;
 
     white-space: pre;
@@ -245,6 +242,8 @@ main {
     text-align: center;
 }
 
+/* ADMIN PLUS BUTTON */
+
 #adminPlus {
     display: none;
 
@@ -263,9 +262,6 @@ main {
     color: black;
 
     font-size: 36px;
-    line-height: 1;
-
-    font-weight: 400;
 
     cursor: pointer;
 
@@ -273,6 +269,8 @@ main {
 
     z-index: 80;
 }
+
+/* CREATOR */
 
 .overlay {
     display: none;
@@ -295,7 +293,6 @@ main {
 
 .creator {
     max-width: 700px;
-
     margin: auto;
 
     background: #0b0b0b;
@@ -329,7 +326,6 @@ main {
     height: 46px;
 
     font-size: 22px;
-
     cursor: pointer;
 }
 
@@ -393,19 +389,16 @@ textarea {
     cursor: pointer;
 }
 
+.publish-button:disabled {
+    opacity: 0.5;
+}
+
 .status {
     margin-top: 14px;
 
     min-height: 20px;
 
     color: #aaa;
-}
-
-.admin-text {
-    color: #f4bd00;
-    font-size: 13px;
-
-    display: none;
 }
 
 footer {
@@ -447,6 +440,7 @@ footer {
             </div>
 
             <div>
+
                 <div class="brand-name">
                     Angel Scripts
                 </div>
@@ -457,6 +451,7 @@ footer {
                 >
                     Admin
                 </div>
+
             </div>
 
         </div>
@@ -497,6 +492,7 @@ footer {
     <h2 class="section-title">
         Scripts
     </h2>
+
 
     <div id="scripts">
 
@@ -604,49 +600,9 @@ footer {
 
 <script type="module">
 
-/*
-=================================================
-STEP 1
-
-PASTE YOUR FIREBASE CONFIG VALUES BELOW.
-
-Go to:
-
-Firebase
-→ Project Settings
-→ Your apps
-→ Angel Scripts web app
-→ SDK setup and configuration
-
-You only replace the values inside quotation marks.
-=================================================
-*/
-
-
-const firebaseConfig = {
-
-    apiKey: "PASTE_YOUR_API_KEY",
-
-    authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-
-    projectId: "PASTE_YOUR_PROJECT_ID",
-
-    storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
-
-    messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
-
-    appId: "PASTE_YOUR_APP_ID"
-
-};
-
-
-/*
-=================================================
-You normally do NOT need to edit anything
-under this line.
-=================================================
-*/
-
+/* =========================================
+   FIREBASE
+========================================= */
 
 import {
     initializeApp
@@ -657,7 +613,6 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import {
     getAuth,
     GoogleAuthProvider,
-    signInWithPopup,
     signInWithRedirect,
     getRedirectResult,
     signOut,
@@ -681,22 +636,36 @@ import {
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
-const app =
-    initializeApp(firebaseConfig);
+/* YOUR FIREBASE CONFIG */
 
-const auth =
-    getAuth(app);
+const firebaseConfig = {
+    apiKey: "AIzaSyDvqty2_vzvYTZMk4LzkN_Sr-9CXmMB3tk",
+    authDomain: "angel-scripts-a20ea.firebaseapp.com",
+    projectId: "angel-scripts-a20ea",
+    storageBucket: "angel-scripts-a20ea.firebasestorage.app",
+    messagingSenderId: "555926175708",
+    appId: "1:555926175708:web:8fe74ddca2fb04bffa9919",
+    measurementId: "G-10GVDP4X21"
+};
 
-const db =
-    getFirestore(app);
 
-const provider =
-    new GoogleAuthProvider();
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const provider = new GoogleAuthProvider();
 
 
-const ADMIN_EMAIL =
-    "Qodukogbe@gmail.com";
+/* Change this only if your Google email is different. */
 
+const ADMIN_EMAIL = "qodukogbe@gmail.com";
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
 
 const authButton =
     document.getElementById("authButton");
@@ -736,15 +705,15 @@ const searchInput =
 
 
 let currentUser = null;
+
 let scripts = [];
+
 let unsubscribeScripts = null;
 
 
-/*
-=============================
-ADMIN CHECK
-=============================
-*/
+/* =========================================
+   ADMIN CHECK
+========================================= */
 
 function isAdmin(user) {
 
@@ -754,18 +723,16 @@ function isAdmin(user) {
 
     return (
         user.emailVerified === true &&
-        user.email?.toLowerCase()
-        === ADMIN_EMAIL.toLowerCase()
+        user.email?.toLowerCase() ===
+        ADMIN_EMAIL.toLowerCase()
     );
 
 }
 
 
-/*
-=============================
-AUTHENTICATION
-=============================
-*/
+/* =========================================
+   GOOGLE SIGN IN
+========================================= */
 
 authButton.addEventListener(
     "click",
@@ -792,45 +759,36 @@ authButton.addEventListener(
 
         try {
 
+            authButton.disabled = true;
+
+            authButton.textContent =
+                "Opening Google...";
+
+
             /*
-            Try popup first.
-            Works well on most browsers.
+            Redirect works better than
+            popups on many mobile browsers.
             */
 
-            await signInWithPopup(
+            await signInWithRedirect(
                 auth,
                 provider
             );
 
         } catch (error) {
 
-            /*
-            Some mobile browsers block popups.
-            Redirect is the backup.
-            */
+            console.error(error);
 
-            if (
-                error.code ===
-                "auth/popup-blocked"
-                ||
-                error.code ===
-                "auth/cancelled-popup-request"
-                ||
-                error.code ===
-                "auth/operation-not-supported-in-this-environment"
-            ) {
+            authButton.disabled = false;
 
-                await signInWithRedirect(
-                    auth,
-                    provider
-                );
-
-                return;
-            }
+            authButton.textContent =
+                "Sign in";
 
 
             alert(
-                "Sign in failed: " +
+                "Google sign in failed.\n\n" +
+                error.code +
+                "\n\n" +
                 error.message
             );
 
@@ -841,32 +799,53 @@ authButton.addEventListener(
 
 
 /*
-Handle return from redirect sign-in.
+Check for a result after Google
+redirects back to Angel Scripts.
 */
 
 try {
 
-    await getRedirectResult(auth);
+    const redirectResult =
+        await getRedirectResult(auth);
+
+    if (redirectResult?.user) {
+
+        console.log(
+            "Signed in:",
+            redirectResult.user.email
+        );
+
+    }
 
 } catch (error) {
 
     console.error(
-        "Redirect sign-in error:",
+        "Redirect sign-in failed:",
         error
+    );
+
+
+    alert(
+        "Google sign in failed.\n\n" +
+        error.code +
+        "\n\n" +
+        error.message
     );
 
 }
 
 
-/*
-Watch login status.
-*/
+/* =========================================
+   LOGIN STATUS
+========================================= */
 
 onAuthStateChanged(
     auth,
     function (user) {
 
         currentUser = user;
+
+        authButton.disabled = false;
 
 
         if (!user) {
@@ -917,11 +896,9 @@ onAuthStateChanged(
 );
 
 
-/*
-=============================
-CREATE SCRIPT PANEL
-=============================
-*/
+/* =========================================
+   CREATOR
+========================================= */
 
 adminPlus.addEventListener(
     "click",
@@ -930,6 +907,7 @@ adminPlus.addEventListener(
         if (!isAdmin(currentUser)) {
             return;
         }
+
 
         creatorOverlay.classList.add(
             "open"
@@ -971,11 +949,9 @@ function closeCreatorPanel() {
 }
 
 
-/*
-=============================
-PUBLISH SCRIPT
-=============================
-*/
+/* =========================================
+   PUBLISH SCRIPT
+========================================= */
 
 publishButton.addEventListener(
     "click",
@@ -1023,8 +999,7 @@ publishButton.addEventListener(
         publishButton.textContent =
             "Publishing...";
 
-        publishStatus.textContent =
-            "";
+        publishStatus.textContent = "";
 
 
         try {
@@ -1035,7 +1010,6 @@ publishButton.addEventListener(
                     "scripts"
                 ),
                 {
-
                     title: title,
 
                     visibility:
@@ -1043,9 +1017,11 @@ publishButton.addEventListener(
 
                     code: code,
 
+                    authorUid:
+                        currentUser.uid,
+
                     createdAt:
                         serverTimestamp()
-
                 }
             );
 
@@ -1097,11 +1073,9 @@ publishButton.addEventListener(
 );
 
 
-/*
-=============================
-LOAD SCRIPTS
-=============================
-*/
+/* =========================================
+   LOAD SCRIPTS
+========================================= */
 
 function startScriptListener() {
 
@@ -1120,7 +1094,8 @@ function startScriptListener() {
     if (isAdmin(currentUser)) {
 
         /*
-        Admin sees public + private.
+        Admin can see public
+        AND private scripts.
         */
 
         scriptsQuery =
@@ -1138,8 +1113,8 @@ function startScriptListener() {
     } else {
 
         /*
-        Everyone else only requests
-        PUBLIC scripts.
+        Everyone else ONLY requests
+        public scripts.
         */
 
         scriptsQuery =
@@ -1181,22 +1156,14 @@ function startScriptListener() {
                 );
 
 
-                /*
-                Public query does not
-                necessarily return newest first,
-                so sort in JavaScript.
-                */
-
                 scripts.sort(
                     function (a, b) {
 
                         const timeA =
-                            a.createdAt?.seconds
-                            || 0;
+                            a.createdAt?.seconds || 0;
 
                         const timeB =
-                            b.createdAt?.seconds
-                            || 0;
+                            b.createdAt?.seconds || 0;
 
                         return timeB - timeA;
 
@@ -1212,13 +1179,28 @@ function startScriptListener() {
 
                 console.error(error);
 
+
                 scriptsContainer.innerHTML =
-                    `
-                    <div class="empty">
-                        Couldn't load scripts.<br><br>
-                        ${escapeHtml(error.message)}
-                    </div>
-                    `;
+                    "";
+
+
+                const errorBox =
+                    document.createElement(
+                        "div"
+                    );
+
+                errorBox.className =
+                    "empty";
+
+
+                errorBox.textContent =
+                    "Couldn't load scripts: " +
+                    error.message;
+
+
+                scriptsContainer.appendChild(
+                    errorBox
+                );
 
             }
         );
@@ -1226,11 +1208,9 @@ function startScriptListener() {
 }
 
 
-/*
-=============================
-DISPLAY SCRIPTS
-=============================
-*/
+/* =========================================
+   DISPLAY SCRIPTS
+========================================= */
 
 function renderScripts() {
 
@@ -1245,8 +1225,7 @@ function renderScripts() {
             function (script) {
 
                 return (
-                    script.title
-                    || ""
+                    script.title || ""
                 )
                 .toLowerCase()
                 .includes(search);
@@ -1255,20 +1234,28 @@ function renderScripts() {
         );
 
 
+    scriptsContainer.innerHTML = "";
+
+
     if (filtered.length === 0) {
 
-        scriptsContainer.innerHTML =
-            `
-            <div class="empty">
-                No scripts found.
-            </div>
-            `;
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.className =
+            "empty";
+
+        empty.textContent =
+            "No scripts found.";
+
+        scriptsContainer.appendChild(
+            empty
+        );
 
         return;
     }
-
-
-    scriptsContainer.innerHTML = "";
 
 
     filtered.forEach(
@@ -1283,97 +1270,135 @@ function renderScripts() {
                 "script-card";
 
 
-            const safeTitle =
-                escapeHtml(
-                    script.title
-                    || "Untitled Script"
+            /* TITLE */
+
+            const title =
+                document.createElement(
+                    "h2"
                 );
 
+            title.className =
+                "script-title";
 
-            const safeVisibility =
-                script.visibility
-                === "private"
+            title.textContent =
+                script.title ||
+                "Untitled Script";
+
+
+            /* BADGES */
+
+            const badges =
+                document.createElement(
+                    "div"
+                );
+
+            badges.className =
+                "badges";
+
+
+            const languageBadge =
+                document.createElement(
+                    "span"
+                );
+
+            languageBadge.className =
+                "badge";
+
+            languageBadge.textContent =
+                "Luau";
+
+
+            const visibilityBadge =
+                document.createElement(
+                    "span"
+                );
+
+            const visibility =
+                script.visibility ===
+                "private"
                 ? "private"
                 : "public";
 
 
-            card.innerHTML =
-                `
-                <h2 class="script-title">
-                    ${safeTitle}
-                </h2>
-
-                <div class="badges">
-
-                    <span class="badge">
-                        Luau
-                    </span>
-
-                    <span
-                        class="badge
-                        ${
-                            safeVisibility ===
-                            "public"
-                            ?
-                            "public-badge"
-                            :
-                            "private-badge"
-                        }"
-                    >
-                        ${
-                            safeVisibility ===
-                            "public"
-                            ?
-                            "Public"
-                            :
-                            "Private"
-                        }
-                    </span>
-
-                </div>
-
-                <pre class="code-box"><code></code></pre>
-
-                <div class="card-buttons">
-
-                    <button
-                        class="card-button copy-button"
-                    >
-                        📋 COPY SCRIPT
-                    </button>
-
-                    ${
-                        isAdmin(currentUser)
-                        ?
-                        `
-                        <button
-                            class="card-button delete-button"
-                        >
-                            Delete
-                        </button>
-                        `
-                        :
-                        ""
-                    }
-
-                </div>
-                `;
+            visibilityBadge.className =
+                "badge " +
+                (
+                    visibility ===
+                    "public"
+                    ?
+                    "public-badge"
+                    :
+                    "private-badge"
+                );
 
 
-            const codeElement =
-                card.querySelector(
+            visibilityBadge.textContent =
+                visibility === "public"
+                ? "Public"
+                : "Private";
+
+
+            badges.appendChild(
+                languageBadge
+            );
+
+            badges.appendChild(
+                visibilityBadge
+            );
+
+
+            /* CODE */
+
+            const pre =
+                document.createElement(
+                    "pre"
+                );
+
+            pre.className =
+                "code-box";
+
+
+            const code =
+                document.createElement(
                     "code"
                 );
 
 
-            codeElement.textContent =
+            /*
+            IMPORTANT:
+            textContent means uploaded code
+            is displayed as text and isn't
+            executed by the website.
+            */
+
+            code.textContent =
                 script.code || "";
 
 
-            const copyButton =
-                card.querySelector(
-                    ".copy-button"
+            pre.appendChild(code);
+
+
+            /* BUTTONS */
+
+            const buttons =
+                document.createElement(
+                    "div"
                 );
+
+            buttons.className =
+                "card-buttons";
+
+
+            const copyButton =
+                document.createElement(
+                    "button"
+                );
+
+            copyButton.className =
+                "card-button copy-button";
+
+            copyButton.textContent =
+                "📋 COPY SCRIPT";
 
 
             copyButton.addEventListener(
@@ -1389,13 +1414,24 @@ function renderScripts() {
             );
 
 
-            const deleteButton =
-                card.querySelector(
-                    ".delete-button"
-                );
+            buttons.appendChild(
+                copyButton
+            );
 
 
-            if (deleteButton) {
+            if (isAdmin(currentUser)) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+                deleteButton.className =
+                    "card-button delete-button";
+
+                deleteButton.textContent =
+                    "Delete";
+
 
                 deleteButton.addEventListener(
                     "click",
@@ -1408,7 +1444,21 @@ function renderScripts() {
                     }
                 );
 
+
+                buttons.appendChild(
+                    deleteButton
+                );
+
             }
+
+
+            card.appendChild(title);
+
+            card.appendChild(badges);
+
+            card.appendChild(pre);
+
+            card.appendChild(buttons);
 
 
             scriptsContainer.appendChild(
@@ -1421,11 +1471,9 @@ function renderScripts() {
 }
 
 
-/*
-=============================
-COPY SCRIPT
-=============================
-*/
+/* =========================================
+   COPY
+========================================= */
 
 async function copyScript(
     code,
@@ -1442,31 +1490,18 @@ async function copyScript(
             code
         );
 
+
         button.textContent =
             "✓ COPIED!";
 
 
-        setTimeout(
-            function () {
-
-                button.textContent =
-                    oldText;
-
-            },
-            1400
-        );
-
-
     } catch (error) {
-
-        /*
-        Backup copy method.
-        */
 
         const textarea =
             document.createElement(
                 "textarea"
             );
+
 
         textarea.value = code;
 
@@ -1476,15 +1511,19 @@ async function copyScript(
         textarea.style.opacity =
             "0";
 
+
         document.body.appendChild(
             textarea
         );
 
+
         textarea.select();
+
 
         document.execCommand(
             "copy"
         );
+
 
         textarea.remove();
 
@@ -1492,27 +1531,25 @@ async function copyScript(
         button.textContent =
             "✓ COPIED!";
 
-
-        setTimeout(
-            function () {
-
-                button.textContent =
-                    oldText;
-
-            },
-            1400
-        );
-
     }
+
+
+    setTimeout(
+        function () {
+
+            button.textContent =
+                oldText;
+
+        },
+        1400
+    );
 
 }
 
 
-/*
-=============================
-DELETE SCRIPT
-=============================
-*/
+/* =========================================
+   DELETE
+========================================= */
 
 async function deleteScript(script) {
 
@@ -1556,49 +1593,14 @@ async function deleteScript(script) {
 }
 
 
-/*
-=============================
-SEARCH
-=============================
-*/
+/* =========================================
+   SEARCH
+========================================= */
 
 searchInput.addEventListener(
     "input",
     renderScripts
 );
-
-
-/*
-=============================
-SAFE HTML
-=============================
-*/
-
-function escapeHtml(text) {
-
-    return String(text)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
 
 </script>
 
